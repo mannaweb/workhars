@@ -1,0 +1,35 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Videourls_model extends CI_Model {
+
+	public function __construct(){
+		parent::__construct();
+	}
+
+	public function getData($post_id){
+		return $this->db->get_where('gallery',array('post_id'=>$post_id,'type'=>2))->result();
+	}
+
+	public function saveData($data=array(),$id=''){
+		if(!empty($id)){
+			$this->db->where('id',$id)->update('gallery',$data);
+		}else{
+			$this->db->insert('gallery',$data);
+		}
+
+		return array('status'=>1,'msg'=>'Data successfully saved');
+	}
+
+	public function deleteData($id){
+		if($id){
+			$this->db->where('id',$id)->delete('gallery');
+			return array('status'=>1,'msg'=>'Deleted successfully.');
+		}else{
+			return array('status'=>2,'msg'=>'Something went wrong,please try again later.');
+		}
+	}
+
+	
+
+}

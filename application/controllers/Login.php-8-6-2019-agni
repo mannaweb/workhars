@@ -1,0 +1,32 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Login extends CI_Controller {
+
+	public function __construct(){
+		parent::__construct();
+		if($this->session->userdata('user_id') && $this->uri->segment(2) != 'logout'){
+			redirect('admin/dashboard');
+		}
+		$this->load->model('admin/login_model');
+	}
+
+	public function index(){
+
+		$data = array('viewPage'=>'login','pageTitle'=>'Admin login page','jsFiles'=>array('login'));
+		$this->load->view('admin/template/login',$data);
+	}
+
+	public function login(){
+
+		$login = $this->login_model->login($this->input->post());
+		echo json_encode($login);
+	}
+
+	public function logout(){
+		$this->session->set_userdata('user_id','');
+		$this->session->sess_destroy();
+		redirect('admin');
+	}
+}
+?>
